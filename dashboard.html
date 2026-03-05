@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroEdu - Student Dashboard</title>
+    <style>
+        /* Base Styling to match your theme */
+        body {
+            background-color: #f4f8ff;
+            color: #333333;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 40px;
+            box-shadow: 0 4px 15px rgba(0, 85, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #004aad;
+            text-decoration: none;
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            background-color: #ffffff;
+            color: #ff4d4d;
+            border: 2px solid #ff4d4d;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background-color: #ff4d4d;
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.2);
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-header h2 {
+            margin: 0;
+            color: #004aad;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- NEW: Search Engine Section --- */
+        .search-section {
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            text-align: center;
+        }
+
+        .search-box {
+            display: flex;
+            box-shadow: 0 8px 25px rgba(0, 85, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            background: white;
+            border: 2px solid #e1ebf5;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus-within {
+            border-color: #007bff;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 18px 20px;
+            border: none;
+            font-size: 1.1rem;
+            outline: none;
+            color: #333;
+        }
+
+        .search-box button {
+            padding: 0 30px;
+            background: linear-gradient(90deg, #007bff, #00c6ff);
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .search-box button:hover {
+            opacity: 0.9;
+        }
+
+        .search-message {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            min-height: 20px; /* Keeps layout from jumping */
+        }
+        
+        .msg-error { color: #ff4d4d; }
+        .msg-success { color: #28a745; }
+
+        /* --- NEW: Split Dashboard Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Left side is smaller, Right side is wider */
+            gap: 25px;
+        }
+
+        /* Responsive stack for smaller screens */
+        @media (max-width: 800px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Individual Card Styling */
+        .dash-card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 85, 255, 0.05);
+            border: 1px solid #e1ebf5;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 25px;
+        }
+
+        .dash-card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f4f8ff;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* Streak & Task Specifics */
+        .streak-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0 20px 0;
+        }
+        
+        .streak-fire {
+            font-size: 4rem;
+            filter: drop-shadow(0 4px 6px rgba(255, 107, 0, 0.3));
+        }
+
+        .streak-count {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6b00;
+            line-height: 1;
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e1ebf5;
+        }
+
+        .task-item:last-child { border-bottom: none; }
+        
+        .task-icon { font-size: 1.2rem; }
+        .task-details { flex: 1; }
+        .task-title { font-weight: bold; color: #004aad; font-size: 0.95rem; margin-bottom: 3px; }
+        .task-teacher { font-size: 0.8rem; color: #8898aa; }
+
+        /* Timer Specifics */
+        .stat-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .btn-action {
+            display: block;
+            margin-top: auto;
+            padding: 12px 20px;
+            background: linear-gradient(90deg, #007bff, #00c6ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="nav-brand">
+            <span>🧠⚡</span> NeuroEdu
+        </a>
+        <a href="index.html" class="btn-logout">Log Out</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="welcome-header">
+            <h2>Welcome back, Scholar! 👋</h2>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="studySearchInput" placeholder="Ask a study question or search for resources...">
+                <button id="studySearchBtn">Search</button>
+            </div>
+            <div id="searchMessage" class="search-message"></div>
+        </div>
+
+        <div class="dashboard-layout">
+            
+            <div class="left-panel">
+                
+                <div class="dash-card" style="border-color: #ffecd1; background-color: #fffaf0;">
+                    <h3>🔥 Study Streak</h3>
+                    <div class="streak-display">
+                        <div class="streak-fire">🔥</div>
+                        <div>
+                            <div class="streak-count">12 Days</div>
+                            <div style="color: #6c7a89; font-size: 0.9rem; margin-top: 5px;">You're on fire! Keep it up.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-card">
+                    <h3>✅ Completed Assignments</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <div class="task-icon">📗</div>
+                            <div class="task-details">
+                                <div class="task-title">Chapter 4 Math Worksheet</div>
+                                <div class="task-teacher">Assigned by: Mr. Davis</div>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <div class="task-icon">🔬</div>
+                            <div class="task-details">
+                                <div class="task-title">Cell Division Lab Report</div>
+                                <div class="task-teacher">Assigned by: Mrs. Smith</div>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <div class="task-icon">📝</div>
+                            <div class="task-details">
+                                <div class="task-title">History Essay Outline</div>
+                                <div class="task-teacher">Assigned by: Dr. Allen</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="dash-card">
+                    <h3>⏱️ Focus Session</h3>
+                    <div class="stat-display" id="timerDisplay">25:00</div>
+                    <p style="text-align: center; color: #6c7a89; margin-bottom: 20px;">Pomodoro Focus Timer</p>
+                    <button id="startTimerBtn" class="btn-action">Start Focus</button>
+                </div>
+
+                <div class="dash-card">
+                    <h3>🎯 Weekly Goal</h3>
+                    <div class="stat-display" style="color: #00c6ff; font-size: 2.5rem;">4 / 5 Tasks</div>
+                    <div style="background-color: #f4f8ff; height: 10px; border-radius: 5px; margin-top: 10px; overflow: hidden;">
+                        <div style="background: linear-gradient(90deg, #007bff, #00c6ff); width: 80%; height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /* --- 1. SEARCH ENGINE FILTER LOGIC --- */
+        const searchInput = document.getElementById('studySearchInput');
+        const searchBtn = document.getElementById('studySearchBtn');
+        const searchMessage = document.getElementById('searchMessage');
+
+        // Add any words you want to block to this list
+        const blockedKeywords = [
+            'facebook', 'instagram', 'twitter', 'tiktok', 'snapchat', 'reddit', 
+            'games', 'gaming', 'roblox', 'minecraft', 'fortnite',
+            'movie', 'netflix', 'youtube', 'porn', 'xxx'
+        ];
+
+        function handleSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            searchMessage.textContent = ''; // clear previous messages
+            searchMessage.className = 'search-message';
+
+            if (query === '') {
+                return; // Do nothing if empty
+            }
+
+            // Check if the query contains any blocked words
+            let isBlocked = false;
+            for (let word of blockedKeywords) {
+                if (query.includes(word)) {
+                    isBlocked = true;
+                    break;
+                }
+            }
+
+            if (isBlocked) {
+                // Show Error
+                searchMessage.textContent = "🚫 Blocked: Stay focused! This search is restricted to study topics only.";
+                searchMessage.classList.add('msg-error');
+                searchInput.value = ''; // clear the input
+            } else {
+                // Show Success & redirect to Google Scholar for real study searching
+                searchMessage.textContent = "✅ Searching educational resources...";
+                searchMessage.classList.add('msg-success');
+                
+                // Wait 1 second so they see the success message, then open Google Scholar
+                setTimeout(() => {
+                    window.open('https://scholar.google.com/scholar?q=' + encodeURIComponent(query), '_blank');
+                    searchMessage.textContent = ''; // reset after searching
+                }, 1000);
+            }
+        }
+
+        // Trigger search on button click
+        searchBtn.addEventListener('click', handleSearch);
+
+        // Trigger search when pressing the "Enter" key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+
+
+        /* --- 2. FOCUS TIMER LOGIC (Kept from previous version) --- */
+        let timerInterval;
+        let timeLeft = 25 * 60; // 25 minutes
+        let isRunning = false;
+        const timerDisplay = document.getElementById('timerDisplay');
+        const startTimerBtn = document.getElementById('startTimerBtn');
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            if (seconds < 10) seconds = '0' + seconds;
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+
+        startTimerBtn.addEventListener('click', function() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                startTimerBtn.textContent = 'Resume Focus';
+                startTimerBtn.style.background = '#e6f0fa';
+                startTimerBtn.style.color = '#007bff';
+                isRunning = false;
+            } else {
+                startTimerBtn.textContent = 'Pause';
+                startTimerBtn.style.background = '#ff4d4d';
+                startTimerBtn.style.color = '#ffffff';
+                isRunning = true;
+                timerInterval = setInterval(function() {
+                    timeLeft--;
+                    updateDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        timerDisplay.textContent = "00:00";
+                        startTimerBtn.textContent = 'Session Complete! 🎉';
+                        startTimerBtn.disabled = true;
+                        isRunning = false;
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
