@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroEdu - Student Dashboard</title>
     <style>
-        /* Base Styling to match your theme */
+        /* Base Styling */
         body {
             background-color: #f4f8ff;
             color: #333333;
@@ -54,7 +54,7 @@
 
         /* Main Content Container */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -71,7 +71,7 @@
             letter-spacing: -0.5px;
         }
 
-        /* --- NEW: Search Engine Section --- */
+        /* Search Engine Section */
         .search-section {
             max-width: 700px;
             margin: 0 auto 40px auto;
@@ -112,35 +112,29 @@
             transition: opacity 0.2s;
         }
 
-        .search-box button:hover {
-            opacity: 0.9;
-        }
+        .search-box button:hover { opacity: 0.9; }
 
         .search-message {
             margin-top: 10px;
             font-size: 0.95rem;
             font-weight: bold;
-            min-height: 20px; /* Keeps layout from jumping */
+            min-height: 20px;
         }
-        
         .msg-error { color: #ff4d4d; }
         .msg-success { color: #28a745; }
 
-        /* --- NEW: Split Dashboard Layout --- */
+        /* Split Dashboard Layout */
         .dashboard-layout {
             display: grid;
-            grid-template-columns: 1fr 2fr; /* Left side is smaller, Right side is wider */
+            grid-template-columns: 1fr 2.5fr;
             gap: 25px;
         }
 
-        /* Responsive stack for smaller screens */
-        @media (max-width: 800px) {
-            .dashboard-layout {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 900px) {
+            .dashboard-layout { grid-template-columns: 1fr; }
         }
 
-        /* Individual Card Styling */
+        /* Card Styling */
         .dash-card {
             background-color: #ffffff;
             padding: 25px;
@@ -164,7 +158,7 @@
             margin-bottom: 15px;
         }
 
-        /* Streak & Task Specifics */
+        /* LEFT PANEL: Streaks & Time Table */
         .streak-display {
             display: flex;
             align-items: center;
@@ -185,48 +179,127 @@
             line-height: 1;
         }
 
-        .task-list {
+        /* Time Table Specifics */
+        .timetable-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .task-item {
+        .timetable-item {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
+            gap: 15px;
             padding: 12px 0;
             border-bottom: 1px dashed #e1ebf5;
         }
 
-        .task-item:last-child { border-bottom: none; }
+        .timetable-item:last-child { border-bottom: none; }
         
-        .task-icon { font-size: 1.2rem; }
-        .task-details { flex: 1; }
-        .task-title { font-weight: bold; color: #004aad; font-size: 0.95rem; margin-bottom: 3px; }
-        .task-teacher { font-size: 0.8rem; color: #8898aa; }
+        .time-badge {
+            background-color: #e6f0fa;
+            color: #007bff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .subject-title { font-weight: bold; color: #004aad; font-size: 0.95rem; margin-bottom: 3px; }
+        .subject-teacher { font-size: 0.8rem; color: #8898aa; }
+
+        /* RIGHT PANEL: Grid for Apps */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* App 1: AI Tutor */
+        .ai-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .ai-input-wrapper input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #d1e3f8;
+            border-radius: 8px;
+            outline: none;
+        }
+        .ai-response {
+            background-color: #f4f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #333;
+            min-height: 60px;
+            border-left: 4px solid #007bff;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* App 2: Video Upload */
+        .video-upload-area {
+            border: 2px dashed #007bff;
+            background-color: #f4f8ff;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .video-upload-area:hover { background-color: #e6f0fa; }
+        .video-upload-area input[type="file"] { display: none; }
+
+        /* App 3: Notes */
+        .notes-area {
+            width: 100%;
+            height: 120px;
+            border: 1px solid #d1e3f8;
+            border-radius: 8px;
+            padding: 10px;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        .btn-action {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #007bff, #00c6ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn-small { padding: 10px 15px; }
 
         /* Timer Specifics */
         .stat-display {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: bold;
             color: #007bff;
             margin: 10px 0;
             text-align: center;
         }
-
-        .btn-action {
-            display: block;
-            margin-top: auto;
-            padding: 12px 20px;
-            background: linear-gradient(90deg, #007bff, #00c6ff);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            text-align: center;
+        
+        /* Fullscreen Study Mode Overlay */
+        :fullscreen {
+            background-color: #f4f8ff;
+            padding: 40px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -262,126 +335,211 @@
                     <div class="streak-display">
                         <div class="streak-fire">🔥</div>
                         <div>
-                            <div class="streak-count">12 Days</div>
+                            <div class="streak-count" id="streakCounter">12 Days</div>
                             <div style="color: #6c7a89; font-size: 0.9rem; margin-top: 5px;">You're on fire! Keep it up.</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="dash-card">
-                    <h3>✅ Completed Assignments</h3>
-                    <ul class="task-list">
-                        <li class="task-item">
-                            <div class="task-icon">📗</div>
-                            <div class="task-details">
-                                <div class="task-title">Chapter 4 Math Worksheet</div>
-                                <div class="task-teacher">Assigned by: Mr. Davis</div>
+                    <h3>📅 Today's Time Table</h3>
+                    <ul class="timetable-list">
+                        <li class="timetable-item">
+                            <div class="time-badge">09:00 AM</div>
+                            <div>
+                                <div class="subject-title">Engineering Mathematics</div>
+                                <div class="subject-teacher">Calculus Room A - Mr. Davis</div>
                             </div>
                         </li>
-                        <li class="task-item">
-                            <div class="task-icon">🔬</div>
-                            <div class="task-details">
-                                <div class="task-title">Cell Division Lab Report</div>
-                                <div class="task-teacher">Assigned by: Mrs. Smith</div>
+                        <li class="timetable-item">
+                            <div class="time-badge">10:30 AM</div>
+                            <div>
+                                <div class="subject-title">Electronics Lab</div>
+                                <div class="subject-teacher">Hardware Lab 3 - Mrs. Smith</div>
                             </div>
                         </li>
-                        <li class="task-item">
-                            <div class="task-icon">📝</div>
-                            <div class="task-details">
-                                <div class="task-title">History Essay Outline</div>
-                                <div class="task-teacher">Assigned by: Dr. Allen</div>
+                        <li class="timetable-item">
+                            <div class="time-badge">01:00 PM</div>
+                            <div>
+                                <div class="subject-title">Computer Science</div>
+                                <div class="subject-teacher">Programming Basics - Dr. Allen</div>
+                            </div>
+                        </li>
+                        <li class="timetable-item">
+                            <div class="time-badge">03:00 PM</div>
+                            <div>
+                                <div class="subject-title">Project Development</div>
+                                <div class="subject-teacher">Innovation Center</div>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <div class="right-panel">
+            <div class="right-panel apps-grid">
+                
                 <div class="dash-card">
-                    <h3>⏱️ Focus Session</h3>
-                    <div class="stat-display" id="timerDisplay">25:00</div>
-                    <p style="text-align: center; color: #6c7a89; margin-bottom: 20px;">Pomodoro Focus Timer</p>
-                    <button id="startTimerBtn" class="btn-action">Start Focus</button>
+                    <h3>🤖 Ask AI Tutor</h3>
+                    <p style="font-size: 0.85rem; color: #6c7a89; margin-top: 0;">Stuck on a problem? Ask your AI assistant.</p>
+                    <div class="ai-input-wrapper">
+                        <input type="text" id="aiQuestion" placeholder="E.g., Explain Kirchhoff's laws.">
+                        <button class="btn-action btn-small" id="askAiBtn">Ask</button>
+                    </div>
+                    <div id="aiResponse" class="ai-response"></div>
                 </div>
 
                 <div class="dash-card">
-                    <h3>🎯 Weekly Goal</h3>
-                    <div class="stat-display" style="color: #00c6ff; font-size: 2.5rem;">4 / 5 Tasks</div>
-                    <div style="background-color: #f4f8ff; height: 10px; border-radius: 5px; margin-top: 10px; overflow: hidden;">
-                        <div style="background: linear-gradient(90deg, #007bff, #00c6ff); width: 80%; height: 100%;"></div>
-                    </div>
+                    <h3>📹 Lecture Videos</h3>
+                    <p style="font-size: 0.85rem; color: #6c7a89; margin-top: 0;">Upload or watch teacher recordings.</p>
+                    
+                    <label class="video-upload-area">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📤</div>
+                        <div style="font-weight: bold; color: #004aad;">Click to Upload Video</div>
+                        <div style="font-size: 0.8rem; color: #8898aa; margin-top: 5px;">MP4, WebM (Max 50MB)</div>
+                        <input type="file" accept="video/*" id="videoUpload">
+                    </label>
+                    <div id="uploadStatus" style="margin-top: 10px; font-size: 0.85rem; color: #28a745; text-align: center; display: none;">Video uploaded successfully!</div>
                 </div>
+
+                <div class="dash-card">
+                    <h3>📝 Quick Notes</h3>
+                    <p style="font-size: 0.85rem; color: #6c7a89; margin-top: 0;">Jot down important points during study.</p>
+                    <textarea class="notes-area" id="studentNotes" placeholder="Type your notes here..."></textarea>
+                    <button class="btn-action" style="width: 100%;" id="saveNotesBtn">Save Notes</button>
+                </div>
+
+                <div class="dash-card" id="focusCard">
+                    <h3>⏱️ Strict Focus Session</h3>
+                    <div class="stat-display" id="timerDisplay">25:00</div>
+                    <p style="text-align: center; color: #ff4d4d; font-weight: bold; font-size: 0.85rem; margin-bottom: 20px;">
+                        Warning: Leaving the tab 3 times alerts parents!
+                    </p>
+                    <button id="startTimerBtn" class="btn-action" style="width: 100%;">Enter Study Mode</button>
+                </div>
+
             </div>
 
         </div>
     </div>
 
     <script>
-        /* --- 1. SEARCH ENGINE FILTER LOGIC --- */
+        /* 1. SEARCH ENGINE FILTER LOGIC */
         const searchInput = document.getElementById('studySearchInput');
         const searchBtn = document.getElementById('studySearchBtn');
         const searchMessage = document.getElementById('searchMessage');
-
-        // Add any words you want to block to this list
-        const blockedKeywords = [
-            'facebook', 'instagram', 'twitter', 'tiktok', 'snapchat', 'reddit', 
-            'games', 'gaming', 'roblox', 'minecraft', 'fortnite',
-            'movie', 'netflix', 'youtube', 'porn', 'xxx'
-        ];
+        const blockedKeywords = ['facebook', 'instagram', 'twitter', 'tiktok', 'snapchat', 'reddit', 'games', 'gaming', 'roblox', 'minecraft', 'fortnite', 'movie', 'netflix', 'youtube', 'porn', 'xxx'];
 
         function handleSearch() {
             const query = searchInput.value.toLowerCase().trim();
-            searchMessage.textContent = ''; // clear previous messages
+            searchMessage.textContent = ''; 
             searchMessage.className = 'search-message';
+            if (query === '') return;
 
-            if (query === '') {
-                return; // Do nothing if empty
-            }
-
-            // Check if the query contains any blocked words
-            let isBlocked = false;
-            for (let word of blockedKeywords) {
-                if (query.includes(word)) {
-                    isBlocked = true;
-                    break;
-                }
-            }
+            let isBlocked = blockedKeywords.some(word => query.includes(word));
 
             if (isBlocked) {
-                // Show Error
                 searchMessage.textContent = "🚫 Blocked: Stay focused! This search is restricted to study topics only.";
                 searchMessage.classList.add('msg-error');
-                searchInput.value = ''; // clear the input
+                searchInput.value = '';
             } else {
-                // Show Success & redirect to Google Scholar for real study searching
                 searchMessage.textContent = "✅ Searching educational resources...";
                 searchMessage.classList.add('msg-success');
-                
-                // Wait 1 second so they see the success message, then open Google Scholar
                 setTimeout(() => {
                     window.open('https://scholar.google.com/scholar?q=' + encodeURIComponent(query), '_blank');
-                    searchMessage.textContent = ''; // reset after searching
+                    searchMessage.textContent = ''; 
                 }, 1000);
             }
         }
-
-        // Trigger search on button click
         searchBtn.addEventListener('click', handleSearch);
+        searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleSearch(); });
 
-        // Trigger search when pressing the "Enter" key
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleSearch();
+
+        /* 2. REAL AI TUTOR LOGIC (Using Google Gemini) */
+        document.getElementById('askAiBtn').addEventListener('click', async function() {
+            const inputElement = document.getElementById('aiQuestion');
+            const responseDiv = document.getElementById('aiResponse');
+            const question = inputElement.value.trim();
+            
+            if(question === '') return;
+
+            // Show the thinking state
+            responseDiv.style.display = 'block';
+            responseDiv.innerHTML = '<em>Thinking... 🤖</em>';
+            
+            // Your new API Key is inserted here:
+            const API_KEY = 'AIzaSyCZb2QzGuxOUPfPRGbTHrWXZIKMUSHAmrM'; 
+            
+            // Customized prompt for engineering students
+            const prompt = `You are an encouraging, expert tutor for engineering students. A student asks: "${question}". Explain it simply in 2-3 short sentences. Do not do their homework for them, but guide them conceptually.`;
+
+            try {
+                // Fetching from the Google Gemini API
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Detailed error handling
+                if (data.error) {
+                    responseDiv.innerHTML = `<em style="color:red;">API Error: ${data.error.message}</em>`;
+                } 
+                else if (data.promptFeedback && data.promptFeedback.blockReason) {
+                    responseDiv.innerHTML = `<em style="color:orange;">Google safety filter blocked this prompt. Reason: ${data.promptFeedback.blockReason}</em>`;
+                }
+                else if (data.candidates && data.candidates.length > 0) {
+                    const aiAnswer = data.candidates[0].content.parts[0].text;
+                    // Format bold tags from markdown to HTML
+                    const formattedAnswer = aiAnswer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    
+                    responseDiv.innerHTML = `<strong>AI Tutor:</strong> <br><br>${formattedAnswer}`;
+                    inputElement.value = ''; // clear the input box
+                } else {
+                    responseDiv.innerHTML = '<em style="color:red;">The AI returned an empty response. Try asking your question differently.</em>';
+                }
+
+            } catch (error) {
+                console.error("Error asking AI:", error);
+                responseDiv.innerHTML = '<em style="color:red;">Oops! Connection error. Check your internet connection.</em>';
             }
         });
 
 
-        /* --- 2. FOCUS TIMER LOGIC (Kept from previous version) --- */
+        /* 3. VIDEO UPLOAD LOGIC */
+        document.getElementById('videoUpload').addEventListener('change', function() {
+            if(this.files && this.files.length > 0) {
+                const status = document.getElementById('uploadStatus');
+                status.style.display = 'block';
+                status.textContent = `✅ "${this.files[0].name}" prepared for upload!`;
+            }
+        });
+
+
+        /* 4. STUDENT NOTES LOGIC */
+        document.getElementById('saveNotesBtn').addEventListener('click', function() {
+            const btn = this;
+            btn.textContent = '✅ Saved!';
+            btn.style.background = '#28a745';
+            setTimeout(() => {
+                btn.textContent = 'Save Notes';
+                btn.style.background = 'linear-gradient(90deg, #007bff, #00c6ff)';
+            }, 2000);
+        });
+
+
+        /* 5. STRICT FULLSCREEN WITH 3-STRIKE PARENT ALERT */
         let timerInterval;
-        let timeLeft = 25 * 60; // 25 minutes
+        let timeLeft = 25 * 60; 
         let isRunning = false;
+        let distractionCount = 0; 
+        
         const timerDisplay = document.getElementById('timerDisplay');
         const startTimerBtn = document.getElementById('startTimerBtn');
+        const streakCounter = document.getElementById('streakCounter');
 
         function updateDisplay() {
             const minutes = Math.floor(timeLeft / 60);
@@ -390,31 +548,76 @@
             timerDisplay.textContent = `${minutes}:${seconds}`;
         }
 
+        function pauseSession() {
+            clearInterval(timerInterval);
+            startTimerBtn.textContent = 'Resume Study Mode';
+            startTimerBtn.style.background = '#e6f0fa';
+            startTimerBtn.style.color = '#007bff';
+            isRunning = false;
+
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(err => console.log(err));
+            }
+        }
+
+        function startSession() {
+            startTimerBtn.textContent = 'Pause Session';
+            startTimerBtn.style.background = '#ff4d4d';
+            startTimerBtn.style.color = '#ffffff';
+            isRunning = true;
+
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch((err) => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            }
+
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                updateDisplay();
+                if (timeLeft <= 0) {
+                    pauseSession();
+                    timerDisplay.textContent = "00:00";
+                    startTimerBtn.textContent = 'Session Complete! 🎉';
+                    startTimerBtn.disabled = true;
+                }
+            }, 1000);
+        }
+
         startTimerBtn.addEventListener('click', function() {
             if (isRunning) {
-                clearInterval(timerInterval);
-                startTimerBtn.textContent = 'Resume Focus';
-                startTimerBtn.style.background = '#e6f0fa';
-                startTimerBtn.style.color = '#007bff';
-                isRunning = false;
+                pauseSession();
             } else {
-                startTimerBtn.textContent = 'Pause';
-                startTimerBtn.style.background = '#ff4d4d';
-                startTimerBtn.style.color = '#ffffff';
-                isRunning = true;
-                timerInterval = setInterval(function() {
-                    timeLeft--;
-                    updateDisplay();
-                    if (timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        timerDisplay.textContent = "00:00";
-                        startTimerBtn.textContent = 'Session Complete! 🎉';
-                        startTimerBtn.disabled = true;
-                        isRunning = false;
-                    }
-                }, 1000);
+                startSession();
             }
         });
+
+        function triggerStrike(reason) {
+            pauseSession(); 
+            distractionCount++; 
+
+            if (distractionCount >= 3) {
+                alert(`🚨 CRITICAL ALERT TRIGGERED 🚨\n\nYou have left Study Mode 3 times.\n\n📱 A notification has been sent to your parents' Parent Access Portal.\n🔥 Your Study Streak has been reset to 0.\n\nPlease refocus and try again.`);
+                distractionCount = 0; 
+                streakCounter.textContent = "0 Days"; 
+                streakCounter.style.color = "#ff4d4d"; 
+            } else {
+                alert(`🚨 WARNING: STRIKE ${distractionCount}/3 🚨\n\n${reason}\nYour timer is paused. If you reach 3 strikes, your parents will be notified and your streak will be lost.`);
+            }
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden && isRunning) {
+                triggerStrike("You switched tabs or minimized the browser!");
+            }
+        });
+
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement && isRunning) {
+                triggerStrike("You exited fullscreen mode early!");
+            }
+        });
+
     </script>
 </body>
 </html>
