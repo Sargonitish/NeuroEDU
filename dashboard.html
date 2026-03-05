@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroEdu - Student Dashboard</title>
+    <style>
+        /* Base Styling & Layout */
+        body {
+            background-color: #f8fbff;
+            color: #333333;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-right: 90px; /* Space for the Right Sidebar */
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .sidebar-right {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 90px;
+            height: 100vh;
+            background-color: #1c2431; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+        }
+
+        .nav-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: all 0.2s ease-in-out;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .nav-icon-item .icon { font-size: 1.6rem; margin-bottom: 6px; }
+        .nav-icon-item span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .nav-icon-item.active { color: #4080ff; }
+        .nav-icon-item.active .icon { filter: drop-shadow(0 0 10px rgba(64, 128, 255, 0.6)); }
+        .nav-icon-item:hover { color: #ffffff; }
+        .sidebar-footer { margin-top: auto; padding-bottom: 25px; width: 100%; }
+
+        /* --- DASHBOARD COMPONENTS --- */
+        .navbar { background-color: #ffffff; padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e1ebf5; }
+        .nav-logo { width: 140px; height: auto; }
+        
+        .hero-header { background: linear-gradient(90deg, #1e70e9 0%, #26a3f9 100%); padding: 50px 20px; text-align: center; color: white; }
+        .hero-header h2 { margin: 0; font-size: 2.2rem; }
+
+        .container { max-width: 1200px; margin: -30px auto 50px auto; padding: 0 20px; }
+
+        /* Search Box */
+        .search-section { max-width: 700px; margin: 0 auto 30px auto; text-align: center; }
+        .search-box { display: flex; box-shadow: 0 8px 25px rgba(0, 85, 255, 0.15); border-radius: 16px; overflow: hidden; background: white; border: 2px solid #e1ebf5; }
+        .search-box input { flex: 1; padding: 15px 20px; border: none; font-size: 1rem; outline: none; }
+        .search-box button { padding: 0 25px; background: linear-gradient(90deg, #007bff, #00c6ff); color: white; border: none; font-weight: bold; cursor: pointer; }
+        .search-message { margin-top: 10px; font-size: 0.9rem; font-weight: bold; }
+        .msg-error { color: #ff4d4d; }
+        .msg-success { color: #28a745; }
+
+        /* Layout Grid */
+        .dashboard-layout { display: grid; grid-template-columns: 1fr 2.5fr; gap: 25px; }
+        @media (max-width: 900px) { .dashboard-layout { grid-template-columns: 1fr; } }
+
+        /* Card Styling */
+        .dash-card { background-color: #ffffff; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 85, 255, 0.05); border: 1px solid #e1ebf5; margin-bottom: 25px; }
+        .dash-card h3 { margin-top: 0; color: #333; font-size: 1.1rem; border-bottom: 2px solid #f4f8ff; padding-bottom: 10px; margin-bottom: 15px; }
+
+        /* Profile & Streak */
+        .student-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .streak-count { font-size: 2.2rem; font-weight: bold; color: #ff6b00; text-align: center; }
+
+        /* Timetable */
+        .timetable-list { list-style: none; padding: 0; margin: 0; }
+        .timetable-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px dashed #e1ebf5; }
+        .time-badge { background-color: #e6f0fa; color: #007bff; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; min-width: 65px; text-align: center; }
+
+        /* Apps Grid */
+        .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .ai-response { background: #f4f8ff; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff; display: none; margin-top: 10px; font-size: 0.9rem; }
+        .notes-area { width: 100%; height: 100px; border: 1px solid #d1e3f8; border-radius: 8px; padding: 10px; resize: none; outline: none; box-sizing: border-box; }
+        .stat-display { font-size: 2.5rem; font-weight: bold; color: #007bff; text-align: center; margin: 10px 0; }
+        .btn-action { width: 100%; padding: 12px; background: linear-gradient(90deg, #007bff, #00c6ff); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+        :fullscreen, :-webkit-full-screen { background-color: #f4f8ff; padding: 40px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-right">
+        <a href="dashboard.html" class="nav-icon-item active">
+            <div class="icon">🏠</div>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-icon-item">
+            <div class="icon">📚</div>
+            <span>Courses</span>
+        </a>
+        <a href="#" class="nav-icon-item">
+            <div class="icon">🏆</div>
+            <span>Ranks</span>
+        </a>
+        <a href="#" class="nav-icon-item">
+            <div class="icon">📅</div>
+            <span>Events</span>
+        </a>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-icon-item">
+                <div class="icon">⚙️</div>
+                <span>Settings</span>
+            </a>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="logo.png" alt="NeuroEdu" class="nav-logo">
+        </div>
+        <button id="logoutBtn" style="padding: 8px 18px; color: #ff4d4d; border: 1px solid #ff4d4d; background: none; border-radius: 10px; cursor: pointer; font-weight: bold;">Log Out</button>
+    </nav>
+
+    <div class="hero-header">
+        <h2 id="welcomeText">Welcome back, Scholar! 👋</h2>
+        <p>Your focused study session starts here.</p>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="studySearchInput" placeholder="Search educational resources...">
+                <button id="studySearchBtn">Search</button>
+            </div>
+            <div id="searchMessage" class="search-message"></div>
+        </div>
+
+        <div class="dashboard-layout">
+            <div class="left-panel">
+                <div class="dash-card">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img id="mainAvatar" src="https://via.placeholder.com/70" alt="Avatar" class="student-avatar">
+                        <div>
+                            <h4 id="studentNameDisplay" style="margin:0; color:#004aad;">Scholar</h4>
+                            <p style="margin:0; font-size:0.8rem; color:#888;">Engineering Student</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-card" style="background-color: #fffaf0; border-color: #ffecd1;">
+                    <h3>🔥 Study Streak</h3>
+                    <div class="streak-count" id="streakCounter">12 Days</div>
+                </div>
+
+                <div class="dash-card">
+                    <h3>📅 Today's Time Table</h3>
+                    <ul class="timetable-list">
+                        <li class="timetable-item"><div class="time-badge">09:00 AM</div><div><b>Math Lab</b></div></li>
+                        <li class="timetable-item"><div class="time-badge">11:00 AM</div><div><b>Electronics</b></div></li>
+                        <li class="timetable-item"><div class="time-badge">02:00 PM</div><div><b>CS Basics</b></div></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="right-panel apps-grid">
+                <div class="dash-card">
+                    <h3>🤖 AI Tutor</h3>
+                    <input type="text" id="aiQuestion" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; box-sizing: border-box;" placeholder="Ask a question...">
+                    <button class="btn-action" id="askAiBtn" style="margin-top:10px;">Ask AI</button>
+                    <div id="aiResponse" class="ai-response"></div>
+                </div>
+
+                <div class="dash-card">
+                    <h3>⏱️ Locked Focus Session</h3>
+                    <div class="stat-display" id="timerDisplay">25:00</div>
+                    <p style="text-align: center; color: #ff4d4d; font-weight: bold; font-size: 0.8rem; margin-bottom: 15px;">Parent Password required to enter or exit.</p>
+                    <button id="startTimerBtn" class="btn-action">Enter Study Mode</button>
+                </div>
+
+                <div class="dash-card">
+                    <h3>📝 Quick Notes</h3>
+                    <textarea class="notes-area" id="studentNotes" placeholder="Type notes..."></textarea>
+                    <button class="btn-action" style="background:#28a745; margin-top: 10px;" id="saveNotesBtn">Save Notes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* 1. INITIALIZATION & SYNC */
+        document.addEventListener('DOMContentLoaded', () => {
+            const name = localStorage.getItem('neuroUsername');
+            const photo = localStorage.getItem('neuroChildPhoto');
+            if (name) {
+                document.getElementById('welcomeText').textContent = `Welcome back, ${name}! 👋`;
+                document.getElementById('studentNameDisplay').textContent = name;
+            }
+            if (photo) document.getElementById('mainAvatar').src = photo;
+        });
+
+        /* 2. SEARCH LOGIC */
+        const blockedKeywords = ['facebook', 'instagram', 'youtube', 'tiktok', 'games', 'netflix'];
+        document.getElementById('studySearchBtn').addEventListener('click', () => {
+            const query = document.getElementById('studySearchInput').value.toLowerCase().trim();
+            const msg = document.getElementById('searchMessage');
+            if (!query) return;
+
+            if (blockedKeywords.some(word => query.includes(word))) {
+                msg.textContent = "🚫 Blocked: Restricted to study topics only.";
+                msg.className = "search-message msg-error";
+            } else {
+                msg.textContent = "✅ Searching Scholar...";
+                msg.className = "search-message msg-success";
+                setTimeout(() => window.open('https://scholar.google.com/scholar?q=' + encodeURIComponent(query), '_blank'), 800);
+            }
+        });
+
+        /* 3. AI TUTOR (GEMINI) */
+        document.getElementById('askAiBtn').addEventListener('click', async () => {
+            const question = document.getElementById('aiQuestion').value;
+            const resDiv = document.getElementById('aiResponse');
+            if(!question) return;
+
+            resDiv.style.display = 'block';
+            resDiv.innerHTML = 'Thinking... 🤖';
+            const API_KEY = 'AIzaSyCZb2QzGuxOUPfPRGbTHrWXZIKMUSHAmrM';
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: question }] }] })
+                });
+                const data = await response.json();
+                resDiv.innerHTML = `<b>AI Tutor:</b> ${data.candidates[0].content.parts[0].text}`;
+            } catch (e) { resDiv.innerHTML = 'Error connecting to AI.'; }
+        });
+
+        /* 4. PARENT-LOCKED TIMER LOGIC */
+        let timeLeft = 25 * 60; let isRunning = false; let timerInterval; let strikes = 0;
+
+        function requestParentPermission(action) {
+            const savedPass = localStorage.getItem('parentPass') || "1234"; // Default for testing
+            const msg = action === 'enter' ? "Parent Password to START Study Mode:" : "Parent Password to EXIT Study Mode:";
+            const input = prompt(msg);
+            if (input === savedPass) return true;
+            alert("❌ Incorrect Password.");
+            return false;
+        }
+
+        function triggerStrike(reason) {
+            strikes++;
+            if (strikes >= 3) {
+                alert("🚨 PARENT ALERT SENT! Streak reset.");
+                document.getElementById('streakCounter').textContent = "0 Days";
+                strikes = 0;
+            } else {
+                alert(`⚠️ STRIKE ${strikes}/3: ${reason}`);
+            }
+            pauseSession(true);
+        }
+
+        function pauseSession(force = false) {
+            if (!force && isRunning) { if (!requestParentPermission('exit')) return; }
+            clearInterval(timerInterval); isRunning = false;
+            document.getElementById('startTimerBtn').textContent = 'Enter Study Mode';
+            document.getElementById('startTimerBtn').style.background = 'linear-gradient(90deg, #007bff, #00c6ff)';
+            if (document.fullscreenElement) document.exitFullscreen();
+        }
+
+        document.getElementById('startTimerBtn').addEventListener('click', () => {
+            if (isRunning) { pauseSession(); return; }
+            if (requestParentPermission('enter')) {
+                isRunning = true;
+                document.getElementById('startTimerBtn').textContent = 'LOCKED (Click to Pause)';
+                document.getElementById('startTimerBtn').style.background = '#ff4d4d';
+                document.documentElement.requestFullscreen();
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    let m = Math.floor(timeLeft/60); let s = timeLeft%60;
+                    document.getElementById('timerDisplay').textContent = `${m}:${s < 10 ? '0'+s : s}`;
+                    if(timeLeft <= 0) { clearInterval(timerInterval); alert("Complete! 🎉"); pauseSession(true); }
+                }, 1000);
+            }
+        });
+
+        document.addEventListener("visibilitychange", () => { if (document.hidden && isRunning) triggerStrike("Tab Switched!"); });
+        document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && isRunning) triggerStrike("Fullscreen Exited!"); });
+
+        /* 5. LOGOUT */
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('neuroUsername');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

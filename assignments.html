@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroEdu - Assignments Overview</title>
+    <style>
+        /* Base Styling matching Portal Theme */
+        body { background-color: #f4f7fa; color: #333; font-family: 'Segoe UI', sans-serif; margin: 0; padding-right: 90px; }
+
+        /* --- SIDEBAR (Matches Dashboard) --- */
+        .sidebar-right { position: fixed; right: 0; top: 0; width: 90px; height: 100vh; background-color: #1c2431; display: flex; flex-direction: column; align-items: center; padding-top: 30px; z-index: 2000; }
+        .nav-icon-item { display: flex; flex-direction: column; align-items: center; color: #718096; text-decoration: none; margin-bottom: 25px; width: 100%; }
+        .nav-icon-item .icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .nav-icon-item span { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
+        .nav-icon-item.active { color: #4080ff; }
+        .nav-icon-item.active .icon { filter: drop-shadow(0 0 10px rgba(64, 128, 255, 0.6)); }
+
+        .main-content { padding: 40px 60px; }
+
+        /* Progress Header */
+        .assignment-header h2 { font-size: 1.5rem; color: #333; margin: 10px 0; }
+        .progress-container { width: 100%; height: 12px; background: #eef2f7; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+        .progress-fill { width: 95%; height: 100%; background-color: #4CAF50; }
+        .status-text { color: #ff6b6b; font-weight: bold; font-size: 0.85rem; margin-bottom: 30px; }
+
+        /* Completion Grid */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
+        .student-row { background: white; padding: 12px 18px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; border: 1px solid #eef2f7; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .initials-mini { width: 30px; height: 30px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; margin-right: 12px; }
+
+        /* Action Button */
+        .btn-reminder { width: 100%; padding: 14px; background: linear-gradient(90deg, #44a08d, #093637); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: opacity 0.2s; }
+        .btn-reminder:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-right">
+        <a href="org-dashboard.html" class="nav-icon-item">
+            <div class="icon">📊</div>
+            <span>Dashboard</span>
+        </a>
+        <a href="assignments.html" class="nav-icon-item active">
+            <div class="icon">✔️</div>
+            <span>Assignments</span>
+        </a>
+        <a href="#" class="nav-icon-item"><div class="icon">📙</div><span>Homework</span></a>
+        <a href="index.html" style="margin-top:auto; padding-bottom:25px; color:#ff4d4d; text-decoration:none; font-size:0.7rem; font-weight:bold;">LOGOUT</a>
+    </div>
+
+    <div class="main-content">
+        <div class="assignment-header">
+            <p style="color:#888; font-size: 0.9rem; margin:0;">Assignment Overview</p>
+            <h2>Assignment: Quantum Mechanics Quiz 3 (Status: 142/142 Students)</h2>
+            <div class="progress-container"><div class="progress-fill"></div></div>
+            <p class="status-text">95% (135 Completed, 7 Pending)</p>
+        </div>
+
+        <div class="grid">
+            <div>
+                <h4 style="margin-bottom:15px; font-size: 0.95rem;">Assignment Completed (135)</h4>
+                <div class="student-row">
+                    <div style="display:flex; align-items:center;"><div class="initials-mini" style="background:#2b579a;">BC</div><span>Benjamin Carter</span></div>
+                    <span style="color:#4CAF50; font-weight:bold;">✓</span>
+                </div>
+                <div class="student-row">
+                    <div style="display:flex; align-items:center;"><div class="initials-mini" style="background:#4CAF50;">SC</div><span>Sophia Chen</span></div>
+                    <span style="color:#4CAF50; font-weight:bold;">✓</span>
+                </div>
+            </div>
+
+            <div>
+                <h4 style="margin-bottom:15px; font-size: 0.95rem;">Pending Completion (7)</h4>
+                <div class="student-row">
+                    <div style="display:flex; align-items:center;"><div class="initials-mini" style="background:#9c27b0;">LK</div><span>Lennih Kong</span></div>
+                    <span style="color:#ff4d4d; font-weight:bold;">▬</span>
+                </div>
+                <div class="student-row">
+                    <div style="display:flex; align-items:center;"><div class="initials-mini" style="background:#00bcd4;">MB</div><span>Maria Bloore</span></div>
+                    <span style="color:#ff4d4d; font-weight:bold;">▬</span>
+                </div>
+                <button class="btn-reminder" onclick="alert('Reminders sent to 7 students!')">Send Reminder to Pending</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

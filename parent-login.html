@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroEdu - Parent Portal Login</title>
+    <style>
+        /* CSS: Core styling matching your blue/white theme */
+        body { 
+            background: linear-gradient(135deg, #e6f0fa 0%, #ffffff 100%); 
+            color: #333333; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
+
+        .login-container { 
+            background-color: #ffffff; 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 40px; 
+            border-radius: 24px; 
+            box-shadow: 0 15px 35px rgba(0, 85, 255, 0.08); 
+            text-align: center; 
+        }
+        
+        /* Massive centerpiece logo */
+        .custom-logo { 
+            width: 220px; 
+            height: auto; 
+            margin-bottom: 25px; 
+        }
+
+        h2 { 
+            color: #004aad; 
+            margin-top: 0; 
+            margin-bottom: 25px; 
+            font-size: 1.5rem; 
+        }
+        
+        .input-group { 
+            margin-bottom: 15px; 
+            text-align: left; 
+        }
+
+        .input-group input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            background-color: #f4f8ff; 
+            border: 1px solid #d1e3f8; 
+            border-radius: 12px; 
+            font-size: 1rem; 
+            color: #333; 
+            box-sizing: border-box; 
+            outline: none; 
+            transition: all 0.3s ease; 
+        }
+
+        .input-group input:focus { 
+            border-color: #007bff; 
+            background-color: #ffffff; 
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); 
+        }
+
+        /* Primary Login Button */
+        .btn-primary { 
+            width: 100%; 
+            padding: 14px; 
+            background: linear-gradient(90deg, #007bff, #00c6ff); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3); 
+            transition: transform 0.2s; 
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover { 
+            transform: translateY(-2px); 
+        }
+
+        /* Sign Up Section with Button */
+        .signup-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e1ebf5;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ffffff;
+            color: #007bff;
+            border: 2px solid #007bff;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f4f8ff;
+            transform: translateY(-2px);
+        }
+
+        .back-link { 
+            display: block; 
+            margin-top: 20px; 
+            font-size: 0.85rem; 
+            color: #8898aa; 
+            text-decoration: none; 
+        }
+
+        .back-link:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="logo.png" alt="NeuroEdu Logo" class="custom-logo">
+        <h2>Parent Portal Login</h2>
+
+        <form id="parentLoginForm">
+            <div class="input-group">
+                <input type="text" id="studentUsername" placeholder="Student Username" required>
+            </div>
+            <div class="input-group">
+                <input type="email" id="parentEmail" placeholder="Parent Email ID" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="parentPassword" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn-primary">Log In to Portal</button>
+        </form>
+        
+        <div class="signup-section">
+            <a href="parent-signup.html" class="btn-secondary">Create Parent Account</a>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Student Login</a>
+    </div>
+
+    <script>
+        document.getElementById('parentLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            // Capture email to derive a display name
+            const emailInput = document.getElementById('parentEmail').value;
+            const displayName = emailInput.split('@')[0]; 
+
+            // Store in LocalStorage for the Dashboard greeting
+            localStorage.setItem('neuroParentName', displayName);
+            
+            // Redirect to dashboard
+            window.location.href = 'parent-dashboard.html';
+        });
+    </script>
+</body>
+</html>

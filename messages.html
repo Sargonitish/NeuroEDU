@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroEdu - Message Portal</title>
+    <style>
+        /* Base Styling */
+        body {
+            background-color: #f4f7fa;
+            color: #333;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-right: 90px; /* Layout for right-aligned sidebar */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar-right {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 90px;
+            height: 100vh;
+            background-color: #1c2431; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+        }
+
+        .nav-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            text-decoration: none;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .nav-icon-item .icon { font-size: 1.5rem; margin-bottom: 6px; }
+        .nav-icon-item span { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
+        .nav-icon-item.active { color: #4080ff; }
+        .nav-icon-item.active .icon { filter: drop-shadow(0 0 10px rgba(64, 128, 255, 0.6)); }
+
+        /* --- HEADER --- */
+        .hero-header {
+            background: linear-gradient(90deg, #1e70e9 0%, #26a3f9 100%);
+            padding: 20px 60px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .hero-header h1 { margin: 0; font-size: 1.8rem; }
+
+        /* --- MESSAGING INTERFACE --- */
+        .messenger-container {
+            display: flex;
+            flex: 1;
+            margin: 20px 40px 20px 60px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #eef2f7;
+        }
+
+        /* Left: Contact List */
+        .contact-list {
+            width: 320px;
+            border-right: 1px solid #f0f4f8;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-box {
+            padding: 20px;
+            border-bottom: 1px solid #f0f4f8;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid #e1ebf5;
+            background: #f8fbff;
+            outline: none;
+        }
+
+        .contacts-scroll {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .contact-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f9fafb;
+        }
+
+        .contact-item:hover { background: #f4f8ff; }
+        .contact-item.active { background: #eef5ff; border-left: 4px solid #1e70e9; }
+
+        .avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 0.8rem;
+        }
+
+        .contact-info b { font-size: 0.95rem; display: block; }
+        .contact-info span { font-size: 0.75rem; color: #888; }
+
+        /* Right: Chat Window */
+        .chat-window {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .chat-header {
+            padding: 15px 25px;
+            border-bottom: 1px solid #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background-color: #fafbfc;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .msg { max-width: 70%; padding: 12px 18px; border-radius: 15px; font-size: 0.9rem; line-height: 1.4; }
+        .msg.received { background: #ffffff; border: 1px solid #eef2f7; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg.sent { background: #1e70e9; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+
+        .chat-input-area {
+            padding: 20px 25px;
+            border-top: 1px solid #f0f4f8;
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid #e1ebf5;
+            outline: none;
+            background: #f8fbff;
+        }
+
+        .btn-send {
+            background: #1e70e9;
+            color: white;
+            border: none;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+        .btn-send:hover { transform: scale(1.1); }
+
+        .btn-logout { margin-top: auto; padding-bottom: 25px; color: #ff4d4d; text-decoration: none; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-right">
+        <a href="org-dashboard.html" class="nav-icon-item">
+            <div class="icon">📊</div>
+            <span>Dashboard</span>
+        </a>
+        <a href="assignments.html" class="nav-icon-item">
+            <div class="icon">✔️</div>
+            <span>Assignments</span>
+        </a>
+        <a href="homework.html" class="nav-icon-item">
+            <div class="icon">📙</div>
+            <span>Homework</span>
+        </a>
+        <a href="streaks.html" class="nav-icon-item">
+            <div class="icon">🔥</div>
+            <span>Streaks</span>
+        </a>
+        <a href="messages.html" class="nav-icon-item active">
+            <div class="icon">✉️</div>
+            <span>Messages</span>
+        </a>
+        <a href="index.html" class="btn-logout">Logout</a>
+    </div>
+
+    <div class="hero-header">
+        <h1>Message Portal</h1>
+    </div>
+
+    <div class="messenger-container">
+        <div class="contact-list">
+            <div class="search-box">
+                <input type="text" placeholder="Search contacts...">
+            </div>
+            <div class="contacts-scroll">
+                <div class="contact-item active">
+                    <div class="avatar" style="background: #2b579a;">BC</div>
+                    <div class="contact-info">
+                        <b>Benjamin Carter</b>
+                        <span>Parent: Robert Carter</span>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="avatar" style="background: #4CAF50;">SC</div>
+                    <div class="contact-info">
+                        <b>Sophia Chen</b>
+                        <span>Parent: Lisa Chen</span>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="avatar" style="background: #ff9800;">JH</div>
+                    <div class="contact-info">
+                        <b>Jayan Hang</b>
+                        <span>Parent: Mei Hang</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-window">
+            <div class="chat-header">
+                <div>
+                    <b id="activeChatName">Benjamin Carter</b>
+                    <p style="margin:0; font-size: 0.75rem; color:#4CAF50;">● Online</p>
+                </div>
+                <button style="background:none; border:none; color:#1e70e9; cursor:pointer; font-weight:bold;">Call Parent</button>
+            </div>
+
+            <div class="chat-messages" id="chatContainer">
+                <div class="msg received">Hello Mr. Anderson, Benjamin was asking about the Quantum Mechanics Quiz 3 deadline.</div>
+                <div class="msg sent">Hi there! The deadline is set for Friday evening. Has he started on the practice modules yet?</div>
+                <div class="msg received">Yes, he is working on it now. Thank you!</div>
+            </div>
+
+            <form class="chat-input-area" id="chatForm">
+                <input type="text" id="msgInput" placeholder="Type your message here..." required>
+                <button type="submit" class="btn-send">➤</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const chatForm = document.getElementById('chatForm');
+        const chatContainer = document.getElementById('chatContainer');
+        const msgInput = document.getElementById('msgInput');
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = msgInput.value;
+            
+            // Create Sent Message
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('msg', 'sent');
+            msgDiv.textContent = text;
+            
+            chatContainer.appendChild(msgDiv);
+            msgInput.value = '';
+            
+            // Auto-scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
+    </script>
+</body>
+</html>
